@@ -60,6 +60,8 @@ export class BoardComponent {
         event.currentIndex
       );
     }
+    const rta = this.boardsService.getPositions(event.container.data, event.currentIndex);
+    console.log(rta);
   }
 
   addColumn() {
