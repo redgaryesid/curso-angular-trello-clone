@@ -42,6 +42,6 @@ export class BoardsService {
       const onBottomPosition = cards[lastIndex - 1].position;
       return onBottomPosition + this.bufferSpace;
     }
-    return '';
+    return 0;
   }
 }

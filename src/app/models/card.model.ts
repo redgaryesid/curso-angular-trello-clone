@@ -7,3 +7,11 @@ export interface Card {
     list:List;
     description: string;
 }
+
+export interface UpdateCardDto{
+    title?: string;
+    description?: string;
+    position?: number;
+    listId?:string;
+    boardId?:string;
+}
