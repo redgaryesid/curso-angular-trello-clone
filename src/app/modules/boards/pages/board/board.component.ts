@@ -65,7 +65,9 @@ export class BoardComponent {
     const position = this.boardsService.getPositions(event.container.data, event.currentIndex);
     console.log(position);
     const card = event.container.data[event.currentIndex];
-    this.updateCard(card,position);
+    const listID = event.container.id;
+    console.log(listID);
+    this.updateCard(card,position,listID);
   }
 
   addColumn() {
@@ -98,8 +100,8 @@ export class BoardComponent {
     });
   }
 
-  private updateCard(card: Card,position:number) {
-    this.cardsService.updated(card.id,{position}).subscribe((cardUpdated) => {
+  private updateCard(card: Card,position:number,listId:string|number) {
+    this.cardsService.updated(card.id,{position,listId}).subscribe((cardUpdated) => {
       console.log(cardUpdated);
     });
   }
