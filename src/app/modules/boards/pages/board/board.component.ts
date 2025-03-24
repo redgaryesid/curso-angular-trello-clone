@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, Validators } from '@angular/forms';
 import {
@@ -15,6 +15,7 @@ import { ListsService } from '@services/lists.service';
 import { Board } from '@models/board.model';
 import { Card } from '@models/card.model';
 import { List } from '@models/list.model';
+import { BACKGROUNDS, Colors } from '@models/colors. model';
 
 @Component({
   selector: 'app-board',
@@ -30,7 +31,7 @@ import { List } from '@models/list.model';
     `,
   ],
 })
-export class BoardComponent {
+export class BoardComponent implements OnDestroy{
 
   board:Board | null = null;
   inputCard = new FormControl<string>('',{
@@ -43,6 +44,7 @@ export class BoardComponent {
     validators: [Validators.required]
   });
   showListForm = false;
+  colorBackgrounds = BACKGROUNDS;
 
   constructor(
     private readonly dialog: Dialog,
@@ -59,6 +61,10 @@ export class BoardComponent {
         this.getBoard(boardId);
       }
     })
+  }
+
+  ngOnDestroy(): void {
+      this.boardsService.setBackgroudColor('sky');
   }
 
   drop(event: CdkDragDrop<Card[]>) {
@@ -124,6 +130,7 @@ export class BoardComponent {
     this.boardsService.getBoard(id).subscribe((board) => {
       console.log(board);
       this.board = board;
+      this.boardsService.setBackgroudColor(board.backgroundColor);
     });
   }
 
@@ -173,4 +180,13 @@ export class BoardComponent {
     list.showCardForm = false;
 
   }
+
+  get colors(){
+    if(this.board){
+      const clases = this.colorBackgrounds[this.board.backgroundColor];
+      return clases?clases:{};
+    }
+    return {};
+  }
+
 }

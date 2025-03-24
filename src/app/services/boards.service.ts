@@ -7,6 +7,8 @@ import { Board } from '@models/board.model';
 import { Card } from '@models/card.model';
 import { Colors } from '@models/colors. model';
 import { List } from '@models/list.model';
+import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +16,7 @@ import { List } from '@models/list.model';
 export class BoardsService {
   apiUrl = environment.API_URL;
   bufferSpace = 65535;
+  backgroundColor$= new BehaviorSubject<Colors>('sky');
 
   constructor(private readonly http: HttpClient) {}
 
@@ -65,5 +68,10 @@ export class BoardsService {
     const onBottomPosition = cardds[lastIndex].position;
     return onBottomPosition + this.bufferSpace;
 
+  }
+
+  
+  setBackgroudColor(color: Colors){
+    this.backgroundColor$.next(color);
   }
 }
