@@ -37,6 +37,12 @@ export class BoardComponent {
     validators: [Validators.required]
   });
 
+  inputList = new FormControl<string>('',{
+    nonNullable: true,
+    validators: [Validators.required]
+  });
+  showListForm = false;
+
   constructor(
     private readonly dialog: Dialog,
     private readonly route: ActivatedRoute,
@@ -77,11 +83,9 @@ export class BoardComponent {
     this.updateCard(card,position,listID);
   }
 
-  addColumn() {
-    //this.columns.push({
-      //title: 'New Column',
-      //todos: [],
-    //});
+  addList() {
+    const title = this.inputList.value;
+    console.log(title);
   }
 
   openDialog(card: Card) {
