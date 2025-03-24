@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -11,6 +11,7 @@ import { TodoDialogComponent } from '@boards/components/todo-dialog/todo-dialog.
 
 import { BoardsService } from '@services/boards.service';
 import { CardsService } from '@services/cards.service';
+import { ListsService } from '@services/lists.service';
 import { Board } from '@models/board.model';
 import { Card } from '@models/card.model';
 import { List } from '@models/list.model';
@@ -48,7 +49,7 @@ export class BoardComponent {
     private readonly route: ActivatedRoute,
     private readonly boardsService: BoardsService,
     private readonly cardsService: CardsService,
-    private readonly formBuilder: FormBuilder
+    private readonly listService: ListsService
   ) {}
 
   ngOnInit() {
@@ -86,6 +87,21 @@ export class BoardComponent {
   addList() {
     const title = this.inputList.value;
     console.log(title);
+    if(this.board){
+      this.listService.create({
+        title,
+        boardId: this.board.id,
+        position: this.boardsService.getPosotionNewItem(this.board.lists)
+      
+      }).subscribe(list => {
+        this.board?.lists.push({
+          ...list,
+          cards: [],
+        });
+        this.inputList.setValue('');
+        this.showListForm = false;
+      });
+    }
   }
 
   openDialog(card: Card) {
@@ -142,7 +158,7 @@ export class BoardComponent {
         title: title,
         listId: list.id,
         boardId: this.board.id,
-        position: this.boardsService.getPosotionNewCard(list.cards)
+        position: this.boardsService.getPosotionNewItem(list.cards)
       }).subscribe(card => {
         list.cards.push(card);
         this.inputCard.setValue('');

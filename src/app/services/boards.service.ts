@@ -6,6 +6,7 @@ import { checkToken } from '@interceptors/token.interceptor';
 import { Board } from '@models/board.model';
 import { Card } from '@models/card.model';
 import { Colors } from '@models/colors. model';
+import { List } from '@models/list.model';
 
 @Injectable({
   providedIn: 'root',
@@ -55,7 +56,7 @@ export class BoardsService {
     return 0;
   }
 
-  getPosotionNewCard(cardds:Card[]) {
+  getPosotionNewItem(cardds:Card[]|List[]) {
     if(cardds.length === 0){
       return this.bufferSpace;
     }
