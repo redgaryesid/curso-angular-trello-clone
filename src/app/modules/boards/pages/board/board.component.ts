@@ -130,9 +130,23 @@ export class BoardComponent {
     }
   }
 
-  createCard(){
+  createCard(list:List){
     const title = this.inputCard.value;
     console.log(title);
+    if(this.board){
+      this.cardsService.create({
+        title: title,
+        listId: list.id,
+        boardId: this.board.id,
+        position: this.boardsService.getPosotionNewCard(list.cards)
+      }).subscribe(card => {
+        list.cards.push(card);
+        this.inputCard.setValue('');
+        list.showCardForm = false;
+
+      }
+      )
+    }
   }
 
   closeCardForm (list: List){
